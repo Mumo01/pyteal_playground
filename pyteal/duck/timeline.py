@@ -28,7 +28,7 @@ def approval_program():
                 ),
                 App.globalPut(
                     get_sender_acceptance.value(),
-                    App.globalGet(get_sender_acceptance.value()) - Int(1),
+                    App.globalGet(get_sender_acceptance.value()) + Int(1),
                 ),
             ),
             Return(Int(1)),
@@ -53,7 +53,7 @@ def approval_program():
                 )
             ),
             get_sender_acceptance,
-            If(get_sender_acceptance.hasValue(), Return(Int(0))),
+            If(get_sender_acceptance.hasValue(), Return(Int(1))),
             App.globalPut(choice, choice_tally + Int(1)),
             App.localPut(Int(0), Bytes("accepted"), choice),
             Return(Int(1)),
