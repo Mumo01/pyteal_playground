@@ -14,7 +14,14 @@ def approval_program():
         ]
     )
 
-    is_creator = Txn.sender() == App.globalGet(Bytes("Creator"))
+    handle_closeout = Return(Int(0))
+
+    handle_optin = Return(Int(0))
+
+    handle_delete = Return(Int(0))
+
+
+    is_creator = Return(Txn.sender() == App.globalGet(Bytes("Creator")))
 
     get_sender_acceptance = App.localGetEx(Int(0), App.id(), Bytes("accepted"))
     
@@ -62,9 +69,11 @@ def approval_program():
 
     program = Cond(
         [Txn.application_id() == Int(0), on_creation],
-        [Txn.on_completion() == OnComplete.DeleteApplication, Return(is_creator)],
+        [Txn.on_completion() == OnComplete.DeleteApplication, handle_delete],
         [Txn.on_completion() == OnComplete.UpdateApplication, is_creator],
-        [Txn.on_completion() == OnComplete.OptIn, on_work_submission],
+        # [Txn.on_completion() == OnComplete.OptIn, on_work_submission],
+        [Txn.on_completion() == OnComplete.OptIn, handle_optin],
+        [Txn.on_completion() == OnComplete.CloseOut, handle_closeout],
         [Txn.application_args[0] == Bytes("accepted"), on_choosing],
     )
 
