@@ -38,7 +38,7 @@ def approval_program():
         [Txn.on_completion() == OnComplete.DeleteApplication, handle_deleteapp],
         [Txn.on_completion() == OnComplete.UpdateApplication, is_creator],
         [Txn.on_completion() == OnComplete.CloseOut, handle_closeout],
-        [Txn.on_completion() == OnComplete.OptIn, on_retrieve],
+        # [Txn.on_completion() == OnComplete.OptIn, on_retrieve],
     )
 
     return program
